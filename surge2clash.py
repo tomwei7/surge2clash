@@ -2,10 +2,10 @@
 import sys
 import logging
 from yaml import dump
-from typing import Union, Any
+from typing import Union, Any, Dict
 
-ConfigSection = dict[str, Union[str, None]]
-SurgeConfig = dict[str, ConfigSection]
+ConfigSection = Dict[str, Union[str, None]]
+SurgeConfig = Dict[str, ConfigSection]
 
 
 def parse_surge_config(data: str) -> SurgeConfig:
