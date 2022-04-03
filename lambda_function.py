@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
 import sys
-import logging
 
 from urllib import parse, request
 from surge2clash import surge_to_clash
@@ -26,7 +25,7 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'headers': {
-            'Content-Type': 'text/yaml'
+            'Content-Type': 'text/yaml; charset=utf-8'
         },
         'body': clash_config
     }
