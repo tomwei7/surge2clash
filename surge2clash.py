@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import logging
-from yaml import load, dump
+from yaml import dump
 from typing import Union, Any
 
 ConfigSection = dict[str, Union[str, None]]
