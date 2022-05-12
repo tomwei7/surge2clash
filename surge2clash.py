@@ -47,20 +47,27 @@ def surge_general_to_clash(cfg: Any, section: ConfigSection) -> Any:
 
 def surge_proxy_to_clash(cfg: Any, section: ConfigSection) -> Any:
     def build_proxy(name: str, line: str):
+        # name, type, server, port, [[username], password]]
         seqs = list(map(lambda x: x.strip(), line.split(',')))
-        if len(seqs) < 5:
+        if len(seqs) < 3:
             logging.warn('invalid proxy config {}'.format(line))
             return None
-        type_map = {'https': 'http'}
-        return {
+        type_map = {'https': 'http', 'socks5-tls': 'socks5'}
+        p_cfg = {
             'name': name,
             'type': seqs[0] if seqs[0] not in type_map else type_map[seqs[0]],
             'server': seqs[1],
-            'port': seqs[2],
-            'tls': seqs[0] in ['https'],
-            'username': seqs[3],
-            'password': seqs[4],
+            'port': int(seqs[2]),
         }
+        if p_cfg['type'] == 'http' and seqs[0] in ['https']:
+            p_cfg['tls'] = True
+        if p_cfg['type'] == 'socks5' and seqs[0] in ['socks5-tls']:
+            p_cfg['tls'] = True
+        if len(seqs) > 3:
+            p_cfg['username'] = seqs[3]
+        if len(seqs) > 4:
+            p_cfg['password'] = seqs[4]
+        return p_cfg
     proxies = []
     if 'proxies' in cfg:
         proxies = cfg['proxies']
